@@ -1,0 +1,41 @@
+.animacion{
+    animation-name: mostrarGuitarra;
+        animation-duration: 1s;
+        animation-iteration-count: 1;
+        animation-delay: 0;
+        /* animation-timing-function:ease-out ; */
+        animation-timing-function: cubic-bezier(0.1, -0.6, 0.2, 0);
+}
+
+@keyframes mostrarGuitarra{
+    0%{
+        opacity: 0;
+        
+    }
+    /* 25%{
+        opacity: .2;
+        
+    }
+    50%{
+        opacity: .5;
+    }
+    75%{
+        opacity: .7;
+    } */
+    100%{
+        opacity: 1;
+        
+    }
+}
+
+.segAnimacion{
+    background-color: brown;
+    z-index: 2;
+    /* animation-name: mostrarGuitarra;
+        animation-duration: 3s;
+        animation-iteration-count: 1;
+        animation-delay: 0; */
+        /* animation-timing-function:ease-out ; */
+        /* animation-timing-function: cubic-bezier(0.1, -0.6, 0.2, 0); */
+
+}

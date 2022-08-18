@@ -54,7 +54,7 @@ import ListadoNotas from './components/ListadoNotas'
 
                     counter++;
                 
-                    if(counter === 60) {
+                    if(counter === 120) {
                     clearInterval(i)
                     setActivar(false)
                     }

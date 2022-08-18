@@ -33,7 +33,6 @@ function ListadoNotas({notas,setActivar}) {
             transform: y.to((y) => `translate3d(0,${y}%,0)`),
             ...rest,
             width:"100%",
-            height: "auto",
             marginTop: "5%",
             marginBottom:"5%",
             display: "flex",

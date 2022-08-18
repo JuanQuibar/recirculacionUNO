@@ -54,12 +54,12 @@ import ListadoNotas from './components/ListadoNotas'
 
                     counter++;
                 
-                    if(counter === 120) {
+                    if(counter === 20) {
                     clearInterval(i)
                     setActivar(false)
                     }
                      
-                } , 500);
+                } , 3000);
   
             }
                 

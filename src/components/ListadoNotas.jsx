@@ -1,14 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTransition , animated } from "react-spring";
 import Nota from "./Nota";
+import Spinner from "./Spinner";
 
-function ListadoNotas({notas,setActivar}) {
+function ListadoNotas({notas,setActivar, cargando, setCargando}) {
 
   useEffect(()=>{
-    setActivar(true)
+
+    setTimeout(() => {
+      setActivar(true)
+    }, 100);
+
+    notas.length > 1 && setCargando(false)
+
   },[notas])
 
-
+  
   const height = 100;
   const transitions = useTransition(
     notas.map((data, i) => ({ ...data, y: i * height })), 
@@ -22,37 +29,39 @@ function ListadoNotas({notas,setActivar}) {
   );
 
   return (
-    <div>
-      {/* <div className="flex flex-col justify-between mt-5 min-h-full relative bg-orange-600  "> */}
-
+    <>
+      {cargando && <Spinner/>}
       {transitions(({ y, ...rest }, item, { key }) => (
+        
         <animated.div
-
           key={key}
           style={{ 
             transform: y.to((y) => `translate3d(0,${y}%,0)`),
             ...rest,
             width:"100%",
             marginTop: "5%",
-            marginBottom:"5%",
+            marginBottom: "5%",
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
             height: "9%" ,
-            boxSizing:"border-box"
+            boxSizing:"border-box",
+
           }}
         
         >
-
+          
           <Nota
             item={item}
           />
-        
+          
         </animated.div>
+        
       ))}
-
-    </div>
-
+      
+    </>  
+      
+    
   );
 
 }

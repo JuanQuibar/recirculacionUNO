@@ -1,18 +1,16 @@
 import { arreglarCaracteres} from "../helpers"
 
 
-const Nota = ({item}) => {
+const NotaPrueba = ({nota}) => {
 
-    const {autor, titulo, porcentaje, path} = item
+    const {autor, titulo, porcentaje, path} = nota
 
 
   return (
       //PARA LA PRUEBA DE ANIMACIÓN SE CAMBIA MB-3 POR M-0 Y SE AGREGA h-[10%] y border, 
-      <div className=" text-white flex items-end justify-between mx-10 mb-20 bg-gray-600 px-5 rounded-md h-auto box-border border-gray-700 border-solid border-4">
+      <div className=" text-white flex items-end justify-between  bg-gray-600 px-5 m-0 rounded-md box-border  border-gray-700 border-solid border-4">
         <div className="truncate mr-5 text-clip">
-            <div className="capitalize">
-              {arreglarCaracteres(autor)}
-            </div>
+            
 
             <div className="font-bold text-lg  "> 
             {arreglarCaracteres(titulo)}  
@@ -32,4 +30,4 @@ const Nota = ({item}) => {
   )
 }
 
-export default Nota
+export default NotaPrueba

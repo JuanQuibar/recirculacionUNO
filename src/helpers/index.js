@@ -23,10 +23,45 @@ export function arreglarCaracteres (texto) {
         .replace('Ã', 'í')                       
   }
 
+export function verificarLocalStorage (consultarApi, setOrdenar) {
+  if (localStorage.length == 0){
+    consultarApi()
+  } else{
+    setOrdenar(JSON.parse(localStorage.getItem('temporal')).sort((a, b) =>{
+      return b.porcentaje - a.porcentaje
+  })) 
+  }
+}
+
+
 export function calcularPorcentaje (a, b) {
   const porcentaje = (a/b) * 100
   return porcentaje
 }
+
+export function setearPosiciones (notasRender, notas){
+  console.log(notasRender[0].path)
+  notasRender = notas.map(nota =>{
+    for(let i = 0; i < notasRender.length; i++){
+      if(nota.path == notasRender[i].path){
+        notasRender[i].posicionAnterior = notasRender[i].posicionNueva;
+        notasRender[i].posicionNueva = nota.posicionNueva;
+        notasRender[i].porcentaje = nota.porcentaje
+      } else if(nota.path !== notasRender[i].path) {
+        notasRender[i] = Object.assign({}, nota)
+
+      }
+    }
+  })
+}
+
+/* export function setearPosiciones (notasRender, notas) {
+  notas.map(nota => {
+    
+      console.log(notasRender.path)
+    
+  })
+} */
 
 
 let temporal = []

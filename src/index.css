@@ -3,3 +3,8 @@
 @tailwind utilities;
 
 
+*{
+    box-sizing: border-box;
+    height: inherit;
+}
+

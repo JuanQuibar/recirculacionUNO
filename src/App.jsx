@@ -1,19 +1,19 @@
 import { useState, useEffect} from 'react'
-import { comparacion, verificarLocalStorage } from "./helpers"
+import { comparacion, copiarArray, cambiarPosiciones} from "./helpers"
 import ListadoNotas from './components/ListadoNotas'
-import Swal from 'sweetalert2'
-
-
-
+import PorcentajePromedio from './components/PorcentajePromedio'
+import Spinner from './components/Spinner'
 
     function App() {
         
         const [activar, setActivar] = useState(true)
         const [ordenar, setOrdenar] = useState([])
-        const [notas, setNotas] = useState([ ])
+        const [notas, setNotas] = useState([])
+        const [porcentajeTotal, setPorcentajeTotal] = useState(0)
+        const [alturaDiv, setAlturaDiv] = useState("")
+        const [notasRender, setNotasRender] = useState([])
         const [cargando, setCargando] = useState(true)
-        const [calculandoTraslado, setCalculandoTraslado] = useState(false)
-        
+
         useEffect(()=> {
 
             const consultarApi = async () => {
@@ -24,14 +24,12 @@ import Swal from 'sweetalert2'
                     const url = `${import.meta.env.VITE_API_URL}${limit}`
                     
                     const respuesta = await fetch(url)
-                    respuesta.status !== 200 && verificarLocalStorage(consultarApi,setOrdenar) 
+
+                    // respuesta.status !== 200 && verificarLocalStorage(setOrdenar) 
                     
                     const resultado = await respuesta.json()
                     
-                    const arrayTotal =  await resultado.pages
-
-                    const arrayMapeado = await (arrayTotal.map((obj, indice) =>{
-
+                    const arrayTotal =  await resultado.pages.map(obj =>{
                         const objeto = {
                             autor: obj.authors,
                             recirculacion: obj.stats.recirc,
@@ -42,9 +40,9 @@ import Swal from 'sweetalert2'
                             contador: 1
                             }
                         return objeto
-                    }))
+                    })
 
-                    let comparar =  comparacion(arrayMapeado)
+                    let comparar =  comparacion(arrayTotal)
                 
                     localStorage.setItem("temporal", JSON.stringify(comparar))
                     
@@ -63,93 +61,94 @@ import Swal from 'sweetalert2'
 
                     counter++;
                 
-                    if(counter === 120) {
+                    if(counter === 10) {
                     clearInterval(i)
                     setActivar(false)
                     }
                      
-                } , 1000);
-                
-            }
-                
-            /* activar ? bucle() : setOrdenar(JSON.parse(localStorage.getItem('temporal')).sort((a, b) =>{
-                return b.porcentaje - a.porcentaje
-            })) */ 
-
+                } , 3000);
+                  
+            }    
 
             if(activar){
                 bucle()
             } else{
-
                 setOrdenar(JSON.parse(localStorage.getItem('temporal')).sort((a, b) =>{
                     return b.porcentaje - a.porcentaje
-                }));
-
-              
+                })); 
             }
              
         },[activar])
 
 
-        /* useEffect(() =>{
+        useEffect(() =>{
+
             localStorage.removeItem("temporal")
-             setNotas(ordenar.slice(0, 10))
-             setCalculandoTraslado(true)
-                
-        },[ordenar]) */
+            setNotas(ordenar.slice(0, 10))
+
+            if (ordenar.length !== 0){
+                const promediarPorcentaje = () => {  
+                        const filtrar = ordenar.filter(element =>element.concurrentes > 4)
+                        const promediar = (filtrar.reduce((a, b) => a + b.porcentaje, 0) / filtrar.length).toFixed(0)
+                        return promediar
+                }
+                setPorcentajeTotal(promediarPorcentaje)
+            }
+            
+        },[ordenar])
+
 
         useEffect(() =>{
 
-            if(ordenar.length > 1){
+            notas.length > 1 && notas.forEach((element,indice) =>{
+                element.posicionNueva = indice * 100
+                element.posicionAnterior = indice * 100
                 setCargando(false)
-                localStorage.removeItem("temporal")
-                let timerInterval
-                Swal.fire({
-                icon: 'info',
-                width: '500',
-                iconColor: 'rgb(34, 197, 94)',
-                title: 'Calculando recirculación',
-                html: 'El proceso termina en <b></b> milisegundos',
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: () => {
-                    Swal.showLoading()
-                    const b = Swal.getHtmlContainer().querySelector('b')
-                    timerInterval = setInterval(() => {
-                    b.textContent = Swal.getTimerLeft()
-                    }, 100)
-                },
-                willClose: () => {
-                    clearInterval(timerInterval)
-                }
-                })
-                .then((result) => {
-                // Read more about handling dismissals below
-                if (result.dismiss === Swal.DismissReason.timer) {
-                    setNotas(ordenar.slice(0, 10))
-                }
-                })
-            }
-                    
-        },[ordenar]) 
+            })
 
-        
-        return ( 
-
-            <>
-                
-                <ListadoNotas
-                    notas={notas}
-                    setNotas={setNotas}
-                    setActivar={setActivar}
-                    cargando={cargando}
-                    setCargando={setCargando}
-                /> 
-
-            </> 
-
-        )
+            const notasCopy = copiarArray(notas)  
     
+            if(notasRender.length == 0){
+            setNotasRender(notas) 
+            
+            } else  {
+                
+                const actualizarPosiciones = cambiarPosiciones(notasRender, notasCopy)
+                
+                setNotasRender(actualizarPosiciones)   
+            } 
+
+        },[notas])
+
+        return (  
+        <>
+            {cargando ? <Spinner 
+            style={{
+                height: 'auto',
+            }}
+            /> : 
+
+                <div className="bg-gray-700 sm:h-screen pb-4 box-border flex flex-col ">
+                    {cargando && <Spinner/>}
+                    <div className="w-full sm:h-[35%] ">
+                        <PorcentajePromedio 
+                            porcentajeTotal={porcentajeTotal}
+                        />  
+                    </div>
+                    
+                    <ListadoNotas
+                            notasRender={notasRender}
+                            ordenar={ordenar}
+                            setActivar={setActivar}
+                            alturaDiv={alturaDiv}
+                            setAlturaDiv={setAlturaDiv}
+                            setCargando={setCargando}
+                    />   
+                    
+                </div> 
+            }
+        </>
+        )                    
     }
 
 export default App

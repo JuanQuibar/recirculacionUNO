@@ -4,12 +4,16 @@ const Spinner = () => {
   
   return (
 
-    <div className='contenedor'>
-      <div className='texto-spinner'>
-        <h1>Calculando...</h1>
-        <h2>Esto puedo tardar un par de minutos</h2>
-      </div>
-      <div className="center">
+    <div className="bg-black h-screen m-0 flex flex-col justify-center">
+
+        <div className="text-white w-auto h-auto flex flex-col mb-8 justify-center"> 
+
+          <h2 className="text-4xl text-center leading-relaxed">Calculando...</h2>
+          <p className="text-center"> Esto puerde tardar un momento</p>
+        
+        </div>
+
+        <div className="flex h-auto justify-center">
           <div className="wave"></div>
           <div className="wave"></div>
           <div className="wave"></div>
@@ -20,8 +24,10 @@ const Spinner = () => {
           <div className="wave"></div>
           <div className="wave"></div>
           <div className="wave"></div>
-      </div>
+        </div>
+        
     </div>
+    
   )
 }
 

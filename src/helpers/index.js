@@ -23,57 +23,53 @@ export function arreglarCaracteres (texto) {
         .replace('Ã', 'í')                       
   }
 
-export function verificarLocalStorage (consultarApi, setOrdenar) {
-  if (localStorage.length == 0){
-    consultarApi()
-  } else{
-    setOrdenar(JSON.parse(localStorage.getItem('temporal')).sort((a, b) =>{
-      return b.porcentaje - a.porcentaje
-  })) 
-  }
-}
-
 
 export function calcularPorcentaje (a, b) {
   const porcentaje = (a/b) * 100
   return porcentaje
 }
 
-export function setearPosiciones (notasRender, notas){
-  console.log(notasRender[0].path)
-  notasRender = notas.map(nota =>{
-    for(let i = 0; i < notasRender.length; i++){
-      if(nota.path == notasRender[i].path){
-        notasRender[i].posicionAnterior = notasRender[i].posicionNueva;
-        notasRender[i].posicionNueva = nota.posicionNueva;
-        notasRender[i].porcentaje = nota.porcentaje
-      } else if(nota.path !== notasRender[i].path) {
-        notasRender[i] = Object.assign({}, nota)
 
-      }
+let notasCopy = []
+export function cambiarPosiciones (notasRender, notasCopy) {
+  
+  notasCopy.forEach(element =>{
+    
+    for(let i = 0; i <notasCopy.length; i++){
+      if (element.path == notasRender[i].path) {
+          
+            const anterior = notasRender[i].posicionNueva
+            element.posicionAnterior = anterior
+
+            const nueva = element.posicionNueva
+            element.posicionNueva = nueva
+      } 
     }
-  })
+    
+  }  
+  )
+  
+  return notasCopy  
+
 }
 
-/* export function setearPosiciones (notasRender, notas) {
-  notas.map(nota => {
-    
-      console.log(notasRender.path)
-    
-  })
-} */
+
+export function copiarArray (notas) {
+  const cambiar = notas.slice()
+  return cambiar
+}
 
 
 let temporal = []
-export function comparacion (arrayMapeado) {
+export function comparacion (arrayTotal) {
 
   temporal =JSON.parse(localStorage.getItem('temporal')) ?? []
 
   if(temporal.length !== 0){
     
-    arrayMapeado.forEach(element => {
+    arrayTotal.forEach(element => {
 
-      for(let i = 0; i<arrayMapeado.length; i++){
+      for(let i = 0; i<arrayTotal.length; i++){
 
           if(element.path==temporal[i].path){
 
@@ -90,22 +86,19 @@ export function comparacion (arrayMapeado) {
 
             temporal[i].contador++
             
-            
-            
-            /* temporal[i].recirculacion.push(element.recirculacion[0])
-            temporal[i].concurrentes.push(element.concurrentes[0]) */
-
           }
+
       }
+
     }) 
+
     return temporal
     
   } 
   
   else{
-    temporal = arrayMapeado
+    temporal = arrayTotal
     return temporal
-
     
     }
   

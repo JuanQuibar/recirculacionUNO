@@ -16,19 +16,20 @@ const Nota = ({nota, i,setAlturaDiv}) => {
 
     <div className={`traslado${i}`} ref={ref}>
 
-      <div className=" flex items-end justify-between mx-2 mb-0 bg-gray-600 px-2  rounded-md box-border h-full border-gray-700 border-solid border-4">
+      <div className=" flex items-end justify-between mx-2 mb-3 pb-2 bg-gray-600 px-2 rounded-md box-border h-full border-gray-700 border-solid border-1 ">
           
-        <div className="flex justify-start sm:truncate mr-3"> 
+        <div className="flex justify-start sm:truncate  mr-3"> 
 
-          <p className="text-gray-400 my-auto mr-2 text-3xl font-normal">{i + 1} </p>
+          <p className="text-gray-400 mr-2 text-3xl font-normal h-auto self-end mb-0">
+            {i<9 ? `0${i + 1}`: `${i + 1}`} </p>
 
-          <div className=" text-clip text-white flex flex-col justify-start h-auto">
+          <div className="  text-white flex flex-col justify-center pt-1 sm:mt-1 sm:mb-0  ">
               
-              <div className="uppercase text-[10px] m-0 ">
+              <div className="uppercase text-[10px] m-0 sm:leading-none h-auto">
                 {arreglarCaracteres(autor)}
               </div>
 
-              <div className="font-bold text-base m-0 line-clamp-2"> 
+              <div className="font-bold text-base m-0 line-clamp-2 leading-tight sm:leading-none "> 
               {arreglarCaracteres(titulo)}  
               </div> 
 
@@ -53,7 +54,7 @@ const Nota = ({nota, i,setAlturaDiv}) => {
           {`
             .traslado${i} { 
               width: 100%;
-              height:10%;
+              height:auto;
               padding: 0;
               animation-name: trasladar${i};
               animation-duration: 2s;
@@ -61,7 +62,6 @@ const Nota = ({nota, i,setAlturaDiv}) => {
               animation-timing-function:ease-in-out;
               position: absolute;
               box-sizing: border-box;
-              margin: 0;
               position: absolute;
               animation-fill-mode: forwards;
             }

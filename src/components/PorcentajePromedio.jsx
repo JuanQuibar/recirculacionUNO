@@ -1,7 +1,9 @@
 import { CircularProgressbarWithChildren, buildStyles} from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-const PorcentajePromedio = ({porcentajeTotal}) => {
+const PorcentajePromedio = () => {
+
+  let porcentajeTotal = 40
   
   return (
     
@@ -61,7 +63,7 @@ const PorcentajePromedio = ({porcentajeTotal}) => {
         : porcentajeTotal >= 15 ? 
             <div className=" grow flex flex-col box-border overflow-hidden px-4">
               <h2 className="text-blue-400 text-6xl text-center font-bold leading-normal">Regular&#x1F62C;</h2>
-              <p className="text-white text-2xl sm:text-3xl leading-tight">Una <span className="font-bold">recirculación</span> promedio de entre 15% y 19% no es peligrosa, pero la falta para estar bien. Trabajemos para llegar al 20% </p>
+              <p className="text-white text-2xl sm:text-3xl leading-tight">Una <span className="font-bold">recirculación</span> promedio de entre 15% y 19% no es peligrosa, pero le falta para estar bien. Trabajemos para llegar al 20% </p>
             </div> 
         : porcentajeTotal < 15 ? 
             <div className=" grow flex flex-col box-border overflow-hidden px-4">

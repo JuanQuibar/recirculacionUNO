@@ -80,7 +80,7 @@ export function comparacion (arrayTotal) {
             temporal[i].concurrentes = concurrentes
 
             let porcentaje = 0
-            recirculacion == 0 && concurrentes == 0 ? porcentaje = -1 : porcentaje = (recirculacion / concurrentes) * 100
+            recirculacion == 0 && concurrentes == 0 ? porcentaje = 0 : porcentaje = (recirculacion / concurrentes) * 100
 
             temporal[i].porcentaje = porcentaje
 

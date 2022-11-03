@@ -61,12 +61,12 @@ import Spinner from './components/Spinner'
 
                     counter++;
                 
-                    if(counter === 10) {
+                    if(counter === 5) {
                     clearInterval(i)
                     setActivar(false)
                     }
                      
-                } , 3000);
+                } , 1000);
                   
             }    
 

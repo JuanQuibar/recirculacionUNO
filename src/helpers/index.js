@@ -35,7 +35,7 @@ export function cambiarPosiciones (notasRender, notasCopy) {
   
   notasCopy.forEach(element =>{
     
-    for(let i = 0; i <notasCopy.length; i++){
+    for(let i = 0; i <notasRender.length; i++){
       if (element.path == notasRender[i].path) {
           
             const anterior = notasRender[i].posicionNueva
@@ -70,7 +70,7 @@ export function comparacion (arrayTotal) {
     arrayTotal.forEach(element => {
 
       for(let i = 0; i<arrayTotal.length; i++){
-
+          
           if(element.path==temporal[i].path){
 
             const recirculacion = temporal[i].recirculacion + element.recirculacion

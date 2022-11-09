@@ -61,21 +61,28 @@ import Spinner from './components/Spinner'
 
                     counter++;
                 
-                    if(counter === 5) {
+                    if(counter === 10) {
                     clearInterval(i)
                     setActivar(false)
                     }
                      
-                } , 1000);
+                } , 3000);
                   
             }    
 
             if(activar){
                 bucle()
+
             } else{
-                setOrdenar(JSON.parse(localStorage.getItem('temporal')).sort((a, b) =>{
+
+                const orden = (JSON.parse(localStorage.getItem('temporal')).sort((a, b) =>{
                     return b.porcentaje - a.porcentaje
-                })); 
+                }));  
+
+                setOrdenar(orden.filter(element => element.concurrentes > 3))
+                /* setOrdenar(JSON.parse(localStorage.getItem('temporal')).sort((a, b) =>{
+                    return b.porcentaje - a.porcentaje
+                })); */ 
             }
              
         },[activar])
@@ -84,11 +91,12 @@ import Spinner from './components/Spinner'
         useEffect(() =>{
 
             localStorage.removeItem("temporal")
-            setNotas(ordenar.slice(0, 10))
+            setNotas(ordenar)
+            // setNotas(ordenar.slice(0,30))
 
             if (ordenar.length !== 0){
                 const promediarPorcentaje = () => {  
-                        const filtrar = ordenar.filter(element =>element.concurrentes > 4)
+                        const filtrar = ordenar.filter(element =>element.concurrentes > 3)
                         const promediar = (filtrar.reduce((a, b) => a + b.porcentaje, 0) / filtrar.length).toFixed(0)
                         return promediar
                 }
@@ -128,9 +136,9 @@ import Spinner from './components/Spinner'
             }}
             /> : 
 
-                <div className="bg-gray-700 sm:h-screen pb-4 box-border flex flex-col ">
+                <div className="bg-gray-700 sm:h-screen pb-4 box-border flex flex-col sm:justify-between ">
                     {cargando && <Spinner/>}
-                    <div className="w-full sm:h-[35%] ">
+                    <div className="w-full sm:h-[27%] ">
                         <PorcentajePromedio 
                             porcentajeTotal={porcentajeTotal}
                         />  

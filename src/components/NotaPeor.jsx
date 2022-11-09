@@ -1,11 +1,17 @@
 import {useEffect, useRef} from 'react';
 import { arreglarCaracteres} from "../helpers"
 
-const Nota = ({nota, i,setAlturaDiv}) => {
+const NotaPeor = ({nota, i,setAlturaDiv, resta}) => {
+
+    /* nota.posicionAnterior= nota.posicionAnterior-3000
+    nota.posicionNueva= nota.posicionNueva-3000 */
+    
+
 
     const ref = useRef(null)
-    const {autor, titulo, porcentaje, posicionAnterior, posicionNueva} = nota
-
+    const {autor, titulo, porcentaje, posicionNueva, posicionAnterior} = nota
+    const restar = (resta - 1) * 100 - 900
+    
     useEffect(() => {
   
       setAlturaDiv(ref.current.clientHeight)
@@ -29,11 +35,11 @@ const Nota = ({nota, i,setAlturaDiv}) => {
           <div className="  text-white flex flex-col justify-center pt-1 sm:pt-0 sm:mt-1 sm:mb-0 h-auto sm:self-center">
               
               <div className="uppercase text-[10px] md:text-[12px]  m-0 sm:leading-none h-auto">
-                {`${arreglarCaracteres(autor)}  |  ${concurrentes}`}
+              {`${arreglarCaracteres(autor)}  |  ${concurrentes}`}
               </div>
 
-              <div className="font-medium text-base md:text-lg m-0 line-clamp-2 leading-tight h-auto"> 
-              {arreglarCaracteres(titulo)} 
+              <div className="font-semibold text-base md:text-lg m-0 line-clamp-2 leading-tight h-auto"> 
+              {arreglarCaracteres(titulo)}  
               </div> 
 
           </div> 
@@ -63,7 +69,7 @@ const Nota = ({nota, i,setAlturaDiv}) => {
               width: 100%;
               height:auto;
               padding: 0;
-              animation-name: trasladar${i};
+              animation-name: trasladarP${i};
               animation-duration: 2s;
               animation-delay: 0;
               animation-timing-function:ease-in-out;
@@ -71,13 +77,13 @@ const Nota = ({nota, i,setAlturaDiv}) => {
               box-sizing: border-box;
               animation-fill-mode: forwards;
             }
-            @keyframes trasladar${i} {
+            @keyframes trasladarP${i} {
               from{
-                transform: translateY(${posicionAnterior}%); 
+                transform: translateY(${posicionAnterior - restar}%); 
               }
               
               to{
-                transform: translateY(${posicionNueva}%); 
+                transform: translateY(${posicionNueva - restar}%); 
               }
             }
             @media (min-width: 640px){
@@ -94,4 +100,4 @@ const Nota = ({nota, i,setAlturaDiv}) => {
   )
 }
 
-export default Nota
+export default NotaPeor

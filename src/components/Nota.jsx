@@ -4,7 +4,7 @@ import { arreglarCaracteres} from "../helpers"
 const Nota = ({nota, i,setAlturaDiv}) => {
 
     const ref = useRef(null)
-    const {autor, titulo, porcentaje, posicionAnterior, posicionNueva} = nota
+    const {autor, titulo, porcentajePromedioNota, posicionAnterior, posicionNueva} = nota
 
     useEffect(() => {
   
@@ -42,13 +42,13 @@ const Nota = ({nota, i,setAlturaDiv}) => {
 
         <div className="text-2xl sm:text-3xl font-bold flex">
 
-          {porcentaje >= 40 ? 
-            <p className="h-auto self-end sm:self-center text-green-500 ">{`${Math.trunc(porcentaje)}%`}</p>
-          : porcentaje >= 15 ? 
-            <p className=" h-auto self-end sm:self-center text-blue-400"> {`${Math.trunc(porcentaje)}%`} </p> 
-          : porcentaje < 15 ? 
+          {porcentajePromedioNota >= 40 ? 
+            <p className="h-auto self-end sm:self-center text-green-500 ">{`${Math.trunc(porcentajePromedioNota)}%`}</p>
+          : porcentajePromedioNota >= 15 ? 
+            <p className=" h-auto self-end sm:self-center text-blue-400"> {`${Math.trunc(porcentajePromedioNota)}%`} </p> 
+          : porcentajePromedioNota < 15 ? 
             <p className=" h-auto self-end sm:self-center text-red-500">
-            {`${Math.trunc(porcentaje)}%`} </p> 
+            {`${Math.trunc(porcentajePromedioNota)}%`} </p> 
             : ""
           }
 

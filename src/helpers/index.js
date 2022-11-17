@@ -24,12 +24,6 @@ export function arreglarCaracteres (texto) {
   }
 
 
-export function calcularPorcentaje (a, b) {
-  const porcentaje = (a/b) * 100
-  return porcentaje
-}
-
-
 let notasCopy = []
 export function cambiarPosiciones (notasRender, notasCopy) {
   
@@ -61,7 +55,7 @@ export function copiarArray (notas) {
 
 
 let temporal = []
-export function comparacion (arrayTotal) {
+export function promediarPorcentajeNota (arrayTotal) {
 
   temporal =JSON.parse(localStorage.getItem('temporal')) ?? []
 
@@ -73,7 +67,7 @@ export function comparacion (arrayTotal) {
           
           if(element.path==temporal[i].path){
 
-            const recirculacion = temporal[i].recirculacion + element.recirculacion
+            /* const recirculacion = temporal[i].recirculacion + element.recirculacion
             temporal[i].recirculacion = recirculacion
 
             const concurrentes = temporal[i].concurrentes + element.concurrentes
@@ -82,10 +76,16 @@ export function comparacion (arrayTotal) {
             let porcentaje = 0
             recirculacion == 0 && concurrentes == 0 ? porcentaje = 0 : porcentaje = (recirculacion / concurrentes) * 100
 
-            temporal[i].porcentaje = porcentaje
+            temporal[i].porcentaje = porcentaje */
+
+            temporal[i].porcentajeArray = [...temporal[i].porcentajeArray, element.porcentaje];
+
+            temporal[i].porcentajeArray.length > 40 && temporal[i].porcentajeArray.shift();
+
+            temporal[i].porcentajePromedioNota = temporal[i].porcentajeArray.reduce((a,b) => a + b) / temporal[i].porcentajeArray.length;
 
             temporal[i].contador++
-            
+
           }
 
       }

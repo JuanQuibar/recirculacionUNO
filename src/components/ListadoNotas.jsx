@@ -8,7 +8,7 @@ const ListadoNotas = ({notasRender, setCargando, alturaDiv, setAlturaDiv, setAct
 
     setTimeout(() => {
       setActivar(true)
-    }, 100);
+    }, 200);
 
     notasRender.length > 1 && setCargando(false)
 

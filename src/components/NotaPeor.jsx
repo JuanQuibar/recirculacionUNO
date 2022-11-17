@@ -9,7 +9,7 @@ const NotaPeor = ({nota, i,setAlturaDiv, resta}) => {
 
 
     const ref = useRef(null)
-    const {autor, titulo, porcentaje, posicionNueva, posicionAnterior} = nota
+    const {autor, titulo, porcentajePromedioNota, posicionNueva, posicionAnterior} = nota
     const restar = (resta - 1) * 100 - 900
     
     useEffect(() => {
@@ -48,13 +48,13 @@ const NotaPeor = ({nota, i,setAlturaDiv, resta}) => {
 
         <div className="text-2xl sm:text-3xl font-bold flex">
 
-          {porcentaje >= 40 ? 
-            <p className="h-auto self-end sm:self-center text-green-500 ">{`${Math.trunc(porcentaje)}%`}</p>
-          : porcentaje >= 15 ? 
-            <p className=" h-auto self-end sm:self-center text-blue-400"> {`${Math.trunc(porcentaje)}%`} </p> 
-          : porcentaje < 15 ? 
+          {porcentajePromedioNota >= 40 ? 
+            <p className="h-auto self-end sm:self-center text-green-500 ">{`${Math.trunc(porcentajePromedioNota)}%`}</p>
+          : porcentajePromedioNota >= 15 ? 
+            <p className=" h-auto self-end sm:self-center text-blue-400"> {`${Math.trunc(porcentajePromedioNota)}%`} </p> 
+          : porcentajePromedioNota < 15 ? 
             <p className=" h-auto self-end sm:self-center text-red-500">
-            {`${Math.trunc(porcentaje)}%`} </p> 
+            {`${Math.trunc(porcentajePromedioNota)}%`} </p> 
             : ""
           }
 

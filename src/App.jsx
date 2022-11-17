@@ -1,5 +1,5 @@
 import { useState, useEffect} from 'react'
-import { comparacion, copiarArray, cambiarPosiciones} from "./helpers"
+import { promediarPorcentajeNota, copiarArray, cambiarPosiciones} from "./helpers"
 import ListadoNotas from './components/ListadoNotas'
 import PorcentajePromedio from './components/PorcentajePromedio'
 import Spinner from './components/Spinner'
@@ -13,6 +13,7 @@ import Spinner from './components/Spinner'
         const [alturaDiv, setAlturaDiv] = useState("")
         const [notasRender, setNotasRender] = useState([])
         const [cargando, setCargando] = useState(true)
+ 
 
         useEffect(()=> {
 
@@ -34,7 +35,9 @@ import Spinner from './components/Spinner'
                             autor: obj.authors,
                             recirculacion: obj.stats.recirc,
                             concurrentes: obj.stats.article,
-                            porcentaje: 0,
+                            porcentaje: obj.stats.recirc / obj.stats.article * 100,
+                            porcentajeArray: [],
+                            porcentajePromedioNota: 0,
                             titulo: obj.title,
                             path: obj.path,
                             contador: 1
@@ -42,9 +45,9 @@ import Spinner from './components/Spinner'
                         return objeto
                     })
 
-                    let comparar =  comparacion(arrayTotal)
+                    let promedio = promediarPorcentajeNota(arrayTotal)
                 
-                    localStorage.setItem("temporal", JSON.stringify(comparar))
+                    localStorage.setItem("temporal", JSON.stringify(promedio))
                     
                 } catch (error) {
                     console.log(error)
@@ -61,7 +64,7 @@ import Spinner from './components/Spinner'
 
                     counter++;
                 
-                    if(counter === 10) {
+                    if(counter === 3) {
                     clearInterval(i)
                     setActivar(false)
                     }
@@ -76,13 +79,11 @@ import Spinner from './components/Spinner'
             } else{
 
                 const orden = (JSON.parse(localStorage.getItem('temporal')).sort((a, b) =>{
-                    return b.porcentaje - a.porcentaje
+                    return b.porcentajePromedioNota - a.porcentajePromedioNota
                 }));  
 
-                setOrdenar(orden.filter(element => element.concurrentes > 3))
-                /* setOrdenar(JSON.parse(localStorage.getItem('temporal')).sort((a, b) =>{
-                    return b.porcentaje - a.porcentaje
-                })); */ 
+                setOrdenar(orden.filter(element => element.concurrentes > 2))
+                
             }
              
         },[activar])
@@ -90,17 +91,17 @@ import Spinner from './components/Spinner'
 
         useEffect(() =>{
 
-            localStorage.removeItem("temporal")
+            // localStorage.removeItem("temporal") 
             setNotas(ordenar)
             // setNotas(ordenar.slice(0,30))
 
             if (ordenar.length !== 0){
-                const promediarPorcentaje = () => {  
-                        const filtrar = ordenar.filter(element =>element.concurrentes > 3)
-                        const promediar = (filtrar.reduce((a, b) => a + b.porcentaje, 0) / filtrar.length).toFixed(0)
+                const promediarPorcentajeGeneral = () => {  
+                        
+                        const promediar = (ordenar.reduce((a, b) => a + b.porcentajePromedioNota, 0) / ordenar.length).toFixed(0)
                         return promediar
                 }
-                setPorcentajeTotal(promediarPorcentaje)
+                setPorcentajeTotal(promediarPorcentajeGeneral)
             }
             
         },[ordenar])
@@ -130,11 +131,7 @@ import Spinner from './components/Spinner'
 
         return (  
         <>
-            {cargando ? <Spinner 
-            style={{
-                height: 'auto',
-            }}
-            /> : 
+            {cargando ? <Spinner style={{height: 'auto',}}/> : 
 
                 <div className="bg-gray-700 sm:h-screen pb-4 box-border flex flex-col sm:justify-between ">
                     {cargando && <Spinner/>}

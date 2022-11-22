@@ -9,7 +9,7 @@ const NotaPeor = ({nota, i,setAlturaDiv, resta}) => {
 
 
     const ref = useRef(null)
-    const {autor, titulo, porcentajePromedioNota, posicionNueva, posicionAnterior} = nota
+    const {autor, titulo, porcentajePromedioNota, posicionNueva, posicionAnterior, concurrentes, rankingRecirculacion} = nota
     const restar = (resta - 1) * 100 - 900
     
     useEffect(() => {
@@ -17,8 +17,6 @@ const NotaPeor = ({nota, i,setAlturaDiv, resta}) => {
       setAlturaDiv(ref.current.clientHeight)
 
     },[])
-
-    const {concurrentes} = nota
 
   return (
 
@@ -29,7 +27,7 @@ const NotaPeor = ({nota, i,setAlturaDiv, resta}) => {
         <div className="flex justify-start sm:truncate mr-3"> 
 
           <p className="text-gray-400 mr-2 sm:mr-4 text-3xl sm:text-4xl font-normal h-auto self-end sm:self-center mb-0">
-            {i < 9 ? `0${i + 1}`: `${i + 1}`}
+            {rankingRecirculacion < 9 ? `0${rankingRecirculacion + 1}`: `${rankingRecirculacion + 1}`}
           </p>
 
           <div className="  text-white flex flex-col justify-center pt-1 sm:pt-0 sm:mt-1 sm:mb-0 h-auto sm:self-center">

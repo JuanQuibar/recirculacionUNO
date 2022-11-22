@@ -13,8 +13,9 @@ import Spinner from './components/Spinner'
         const [alturaDiv, setAlturaDiv] = useState("")
         const [notasRender, setNotasRender] = useState([])
         const [cargando, setCargando] = useState(true)
- 
+        const [notasRenderConcurrentes, setNotasRenderConcurrentes] = useState([])
 
+ 
         useEffect(()=> {
 
             const consultarApi = async () => {
@@ -38,6 +39,8 @@ import Spinner from './components/Spinner'
                             porcentaje: obj.stats.recirc / obj.stats.article * 100,
                             porcentajeArray: [],
                             porcentajePromedioNota: 0,
+                            posicionNueva: 0,
+                            posicionAnterior: 0,
                             titulo: obj.title,
                             path: obj.path,
                             contador: 1
@@ -67,6 +70,7 @@ import Spinner from './components/Spinner'
                     if(counter === 3) {
                     clearInterval(i)
                     setActivar(false)
+                    setCargando(false)
                     }
                      
                 } , 3000);
@@ -82,7 +86,9 @@ import Spinner from './components/Spinner'
                     return b.porcentajePromedioNota - a.porcentajePromedioNota
                 }));  
 
-                setOrdenar(orden.filter(element => element.concurrentes > 2))
+                console.log(orden)
+
+                setOrdenar(orden.filter(element => element.concurrentes > 2 && element.titulo !== "Diario UNO | Periodismo en serio y de verdad" ))
                 
             }
              
@@ -91,9 +97,7 @@ import Spinner from './components/Spinner'
 
         useEffect(() =>{
 
-            // localStorage.removeItem("temporal") 
             setNotas(ordenar)
-            // setNotas(ordenar.slice(0,30))
 
             if (ordenar.length !== 0){
                 const promediarPorcentajeGeneral = () => {  
@@ -109,16 +113,22 @@ import Spinner from './components/Spinner'
 
         useEffect(() =>{
 
-            notas.length > 1 && notas.forEach((element,indice) =>{
-                element.posicionNueva = indice * 100
-                element.posicionAnterior = indice * 100
+            notas.length > 1 && notas.forEach((element, indice) =>{
+                const ranking = indice
+                element.rankingRecirculacion = ranking
+                const nueva = indice * 100
+                element.posicionNueva = nueva
+                const anterior = indice * 100
+                element.posicionAnterior = anterior
+                /* element.posicionNueva = indice * 100
+                element.posicionAnterior = indice * 100 */
                 setCargando(false)
             })
-
-            const notasCopy = copiarArray(notas)  
+            
+            const notasCopy = JSON.parse(JSON.stringify(notas))
     
             if(notasRender.length == 0){
-            setNotasRender(notas) 
+            setNotasRender(notasCopy) 
             
             } else  {
                 
@@ -130,7 +140,9 @@ import Spinner from './components/Spinner'
         },[notas])
 
         return (  
+            
         <>
+            {cargando && localStorage.removeItem("temporal")}
             {cargando ? <Spinner style={{height: 'auto',}}/> : 
 
                 <div className="bg-gray-700 sm:h-screen pb-4 box-border flex flex-col sm:justify-between ">
@@ -143,12 +155,14 @@ import Spinner from './components/Spinner'
                     
                     <ListadoNotas
                             notasRender={notasRender}
-                            ordenar={ordenar}
+                            // ordenar={ordenar}
                             setActivar={setActivar}
                             alturaDiv={alturaDiv}
                             setAlturaDiv={setAlturaDiv}
-                            setCargando={setCargando}
-                    />   
+                            // setCargando={setCargando}
+                            // notasRenderConcurrentes={notasRenderConcurrentes}
+                            // setNotasRenderConcurrentes={setNotasRenderConcurrentes}
+                    />      
                     
                 </div> 
             }

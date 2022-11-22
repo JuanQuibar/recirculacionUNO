@@ -2,7 +2,7 @@ import React, { useEffect} from "react";
 import Nota from "./Nota";
 import NotaPeor from "./NotaPeor";
 
-const ListadoNotas = ({notasRender, setCargando, alturaDiv, setAlturaDiv, setActivar}) => {
+const ListadoNotas = ({notasRender, setCargando, alturaDiv, setAlturaDiv, setActivar, notasRenderConcurrentes, setNotasRenderConcurrentes}) => {
   
   useEffect(() => {
 
@@ -10,7 +10,7 @@ const ListadoNotas = ({notasRender, setCargando, alturaDiv, setAlturaDiv, setAct
       setActivar(true)
     }, 200);
 
-    notasRender.length > 1 && setCargando(false)
+    // notasRender.length > 1 && setCargando(false)
 
   },[notasRender])  
 
@@ -19,6 +19,13 @@ const ListadoNotas = ({notasRender, setCargando, alturaDiv, setAlturaDiv, setAct
   const final = notasRender.length;
   const inicio = notasRender.length -11
   const resta = notasRender.length
+
+  const renderConcurrentes= [...notasRender]
+  renderConcurrentes.sort((a, b) =>{
+    return b.concurrentes - a.concurrentes
+})
+  
+// setNotasRenderConcurrentes(renderConcurrentes)
   
   return (
 

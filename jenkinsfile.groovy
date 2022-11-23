@@ -5,6 +5,7 @@ pipeline{
     environment {
         BRANCH_NAME = 'main'
         URL_REPO = 'git@github.com:JuanQuibar/recirculacionUNO.git'
+        DOCKER_HOST = "10.0.90.51"
     }
 
     stages{
@@ -20,27 +21,12 @@ pipeline{
             steps{
                 sh'''
                     echo "Build dockerfile + tag local image"
-                    docker-compose up -d --build
+                    sudo docker-compose up -d --build
                     #docker build -t recirculacion:latest .
                 '''
 
             }
-        } //fin stage build image
-
-        stage('Deploy Container'){
-            agent {
-                label 'master'
-            }
-            steps{
-                echo "Correr docker compose para regenerarlo"
-                /*
-                sh '''
-                docker-compose up --build .
-                '''
-                */
-            }
-        } //fin stage upload
-        
+        } //fin stage build image        
         
         stage("Post") {
             agent {

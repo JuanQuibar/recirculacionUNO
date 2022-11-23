@@ -13,13 +13,14 @@ pipeline{
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github', url: "$URL_REPO"]]])
             }
         }
-        stage('Build Image'){
+        stage('Build Image AND Deploy it'){
             agent {
                 label 'master'
             }
             steps{
                 sh'''
                     echo "Build dockerfile + tag local image"
+                    docker-compose up -d --build
                     #docker build -t recirculacion:latest .
                 '''
 

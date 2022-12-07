@@ -1,5 +1,5 @@
 import { useState, useEffect} from 'react'
-import { promediarPorcentajeNota, copiarArray, cambiarPosiciones} from "./helpers"
+import { promediarPorcentajeNota, copiarArray, cambiarPosiciones, porcentajeAutor} from "./helpers"
 import ListadoNotas from './components/ListadoNotas'
 import PorcentajePromedio from './components/PorcentajePromedio'
 import Spinner from './components/Spinner'
@@ -13,7 +13,7 @@ import Spinner from './components/Spinner'
         const [alturaDiv, setAlturaDiv] = useState("")
         const [notasRender, setNotasRender] = useState([])
         const [cargando, setCargando] = useState(true)
-        const [notasRenderConcurrentes, setNotasRenderConcurrentes] = useState([])
+        // const [porcentajeAutor, setPorcentajeAutor] = useState([])
 
  
         useEffect(()=> {
@@ -32,6 +32,7 @@ import Spinner from './components/Spinner'
                     const resultado = await respuesta.json()
                     
                     const arrayTotal =  await resultado.pages.map(obj =>{
+
                         const objeto = {
                             autor: obj.authors,
                             recirculacion: obj.stats.recirc,
@@ -45,7 +46,8 @@ import Spinner from './components/Spinner'
                             path: obj.path,
                             contador: 1
                             }
-                        return objeto
+                        return objeto 
+
                     })
 
                     let promedio = promediarPorcentajeNota(arrayTotal)
@@ -86,9 +88,9 @@ import Spinner from './components/Spinner'
                     return b.porcentajePromedioNota - a.porcentajePromedioNota
                 }));  
 
-                console.log(orden)
+                const ordenCopy = JSON.parse(JSON.stringify(orden))
 
-                setOrdenar(orden.filter(element => element.concurrentes > 2 && element.titulo !== "Diario UNO | Periodismo en serio y de verdad" ))
+                setOrdenar(ordenCopy.filter(element => element.concurrentes > 2 && element.titulo !== "Diario UNO | Periodismo en serio y de verdad" ))
                 
             }
              
@@ -97,6 +99,8 @@ import Spinner from './components/Spinner'
 
         useEffect(() =>{
 
+            porcentajeAutor(ordenar)
+            
             setNotas(ordenar)
 
             if (ordenar.length !== 0){

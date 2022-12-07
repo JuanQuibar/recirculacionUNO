@@ -10,6 +10,8 @@ const NotaPeor = ({nota, i,setAlturaDiv, resta}) => {
 
     const ref = useRef(null)
     const {autor, titulo, porcentajePromedioNota, posicionNueva, posicionAnterior, concurrentes, rankingRecirculacion} = nota
+
+    // la variable restar se aplica para cuando el segundo cuadrante renderiza las 10 peores notas: transform: translateY(${posicionAnterior - restar}%);
     const restar = (resta - 1) * 100 - 900
     
     useEffect(() => {
@@ -77,11 +79,11 @@ const NotaPeor = ({nota, i,setAlturaDiv, resta}) => {
             }
             @keyframes trasladarP${i} {
               from{
-                transform: translateY(${posicionAnterior - restar}%); 
+                transform: translateY(${posicionAnterior - 1000}%); 
               }
               
               to{
-                transform: translateY(${posicionNueva - restar}%); 
+                transform: translateY(${posicionNueva - 1000}%); 
               }
             }
             @media (min-width: 640px){

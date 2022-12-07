@@ -16,14 +16,17 @@ const ListadoNotas = ({notasRender, setCargando, alturaDiv, setAlturaDiv, setAct
 
   const alturaNumber = (alturaDiv * 20)
   const alturaString = (alturaNumber + "px")
+
+  // VARIABLES USADAS PARA CUANDO EL SEGUNDO CUADRANTE RENDERISA LAS 10 NOTAS CON PEOR PORCENTAJE
+  // el uso es : notasRender.map((nota, i) => (i>inicio && i<final && <NotaPeor
   const final = notasRender.length;
   const inicio = notasRender.length -11
   const resta = notasRender.length
 
-  const renderConcurrentes= [...notasRender]
+  /* const renderConcurrentes= [...notasRender]
   renderConcurrentes.sort((a, b) =>{
     return b.concurrentes - a.concurrentes
-})
+}) */
   
 // setNotasRenderConcurrentes(renderConcurrentes)
   
@@ -57,7 +60,7 @@ const ListadoNotas = ({notasRender, setCargando, alturaDiv, setAlturaDiv, setAct
 
       <div className="sm:w-[50%] h-full ">
         {notasRender.map((nota, i) => (
-          i>inicio && i<final && <NotaPeor
+          i>9 && i<20 && <NotaPeor
               key={nota.path}
               nota={nota}
               resta= {resta}

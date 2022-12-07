@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 
 export function arreglarCaracteres (texto) {
     return String(texto)    
@@ -80,6 +79,7 @@ export function promediarPorcentajeNota (arrayTotal) {
 
             temporal[i].porcentajeArray = [...temporal[i].porcentajeArray, element.porcentaje];
 
+            //Establece la cantidad porcentajes de recirculación que acumula de cada nota para luego promediar
             temporal[i].porcentajeArray.length > 40 && temporal[i].porcentajeArray.shift();
 
             temporal[i].porcentajePromedioNota = temporal[i].porcentajeArray.reduce((a,b) => a + b) / temporal[i].porcentajeArray.length;
@@ -104,3 +104,21 @@ export function promediarPorcentajeNota (arrayTotal) {
   
 }
 
+export function porcentajeAutor (ordenar) {
+  const autores = ordenar.map(e => {
+    const objeto = {
+      autor: e.autor,
+      porcentaje: 0
+    }
+    return objeto
+  })
+
+  const eliminarDuplicados = autores.filter((e, index) =>{
+    for(let i = 0; i< autores.length; i++){
+      if ((e.autor == autores[i].autor) && (index == i)){
+      }
+    }
+  })
+  return eliminarDuplicados
+
+}

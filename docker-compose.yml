@@ -1,0 +1,6 @@
+version: '2.2'
+services:
+  recirculacion:
+    build: .
+    ports:
+      - "8086:80"

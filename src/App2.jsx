@@ -4,7 +4,7 @@ import ListadoNotas from './components/ListadoNotas'
 import PorcentajePromedio from './components/PorcentajePromedio'
 import Spinner from './components/Spinner'
 
-    function App() {
+    function App2() {
         
         const [activar, setActivar] = useState(true)
         const [ordenar, setOrdenar] = useState([])
@@ -13,8 +13,7 @@ import Spinner from './components/Spinner'
         const [alturaDiv, setAlturaDiv] = useState("")
         const [notasRender, setNotasRender] = useState([])
         const [cargando, setCargando] = useState(true)
-        const [totalConcurrentes, setTotalConcurrentes] = useState([])
-        const [totalRecirc, setTotalRecirc] = useState([])
+        // const [porcentajeAutor, setPorcentajeAutor] = useState([])
 
  
         useEffect(()=> {
@@ -49,9 +48,9 @@ import Spinner from './components/Spinner'
                             }
                         return objeto 
 
-                    }).filter(e=> e.concurrentes  > 2 )
+                    })
 
-                    const promedio = promediarPorcentajeNota(arrayTotal)
+                    let promedio = promediarPorcentajeNota(arrayTotal)
                 
                     localStorage.setItem("temporal", JSON.stringify(promedio))
                     
@@ -84,26 +83,25 @@ import Spinner from './components/Spinner'
                 bucle()
 
             } else{
-                const orden = (JSON.parse(localStorage.getItem('temporal')).slice(0, 30).sort((a, b) =>{
+                
+                const orden = (JSON.parse(localStorage.getItem('temporal')).sort((a, b) =>{
                     return b.porcentajePromedioNota - a.porcentajePromedioNota
-                })
-                );  
+                }));  
 
                 const ordenCopy = JSON.parse(JSON.stringify(orden))
 
-                // setOrdenar(ordenCopy)
-                setNotas(ordenCopy)
+                setOrdenar(ordenCopy.filter(element => element.concurrentes > 2 && element.titulo !== "Diario UNO | Periodismo en serio y de verdad" ))
                 
             }
              
         },[activar])
 
 
-        /* useEffect(() =>{
+        useEffect(() =>{
 
             porcentajeAutor(ordenar)
             
-            // setNotas(ordenar)
+            setNotas(ordenar)
 
             if (ordenar.length !== 0){
                 const promediarPorcentajeGeneral = () => {  
@@ -114,22 +112,12 @@ import Spinner from './components/Spinner'
                 setPorcentajeTotal(promediarPorcentajeGeneral)
             }
             
-        },[ordenar]) */
+        },[ordenar])
 
 
         useEffect(() =>{
 
-            const extraerTemporal = JSON.parse(localStorage.getItem('temporal')) || []
-            if (extraerTemporal.length !== 0){
-                const promediarPorcentajeGeneral = () => {  
-                        
-                        const promediar = (extraerTemporal.reduce((a, b) => a + b.porcentajePromedioNota, 0) / extraerTemporal.length).toFixed(0)
-                        return promediar
-                }
-                setPorcentajeTotal(promediarPorcentajeGeneral)
-            }
-
-            notas.length > 1 && notas.forEach((element, indice) =>{
+            /* notas.length > 1 && notas.forEach((element, indice) =>{
                 const ranking = indice
                 element.rankingRecirculacion = ranking
                 const nueva = indice * 100
@@ -137,14 +125,20 @@ import Spinner from './components/Spinner'
                 const anterior = indice * 100
                 element.posicionAnterior = anterior
                 setCargando(false)
-            }) 
+            }) */
+            notas.length > 1 && setCargando(false)
             
+            notas.length > 1 && console.log (minConcurrentes(notas))
             const notasCopy = JSON.parse(JSON.stringify(notas))
+            console.log(notasCopy)
+
     
             if(notasRender.length == 0){
             setNotasRender(notasCopy) 
             
             } else  {
+                /* const baseConcurrentes = minConcurrentes(notasCopy)
+                console.log(notasRender.filter(notas => notas.concurrentes > baseConcurrentes)) */
                 
                 const actualizarPosiciones = cambiarPosiciones(notasRender, notasCopy)
                 
@@ -161,7 +155,7 @@ import Spinner from './components/Spinner'
             {cargando ? <Spinner style={{height: 'auto',}}/> : 
 
                 <div className="bg-gray-700 sm:h-screen pb-4 box-border flex flex-col sm:justify-between ">
-                    {/* {cargando && <Spinner/>} */}
+                    {cargando && <Spinner/>}
                     <div className="w-full sm:h-[27%] ">
                         <PorcentajePromedio 
                             porcentajeTotal={porcentajeTotal}
@@ -185,4 +179,4 @@ import Spinner from './components/Spinner'
         )                    
     }
 
-export default App
+export default App2

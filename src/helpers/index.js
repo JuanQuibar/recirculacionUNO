@@ -64,44 +64,60 @@ export function promediarPorcentajeNota (arrayTotal) {
 
       for(let i = 0; i<arrayTotal.length; i++){
           
-          if(element.path==temporal[i].path){
+        if(temporal[i] && (element.path==temporal[i].path)){
 
-            /* const recirculacion = temporal[i].recirculacion + element.recirculacion
-            temporal[i].recirculacion = recirculacion
+          const recirculacion = element.recirculacion
+          temporal[i].recirculacion = recirculacion
 
-            const concurrentes = temporal[i].concurrentes + element.concurrentes
-            temporal[i].concurrentes = concurrentes
+          const concurrentes = element.concurrentes
+          temporal[i].concurrentes = concurrentes
 
-            let porcentaje = 0
-            recirculacion == 0 && concurrentes == 0 ? porcentaje = 0 : porcentaje = (recirculacion / concurrentes) * 100
+          const porcentaje = element.porcentaje
+          temporal[i].porcentaje = porcentaje
 
-            temporal[i].porcentaje = porcentaje */
+           temporal[i].porcentajeArray = [...temporal[i].porcentajeArray, element.porcentaje];
 
-            temporal[i].porcentajeArray = [...temporal[i].porcentajeArray, element.porcentaje];
+          //Establece la cantidad de porcentajes de recirculación que acumula de cada nota para luego promediar
+          temporal[i].porcentajeArray.length > 40 && temporal[i].porcentajeArray.shift();
 
-            //Establece la cantidad porcentajes de recirculación que acumula de cada nota para luego promediar
-            temporal[i].porcentajeArray.length > 40 && temporal[i].porcentajeArray.shift();
+          temporal[i].porcentajePromedioNota = temporal[i].porcentajeArray.reduce((a,b) => a + b) / temporal[i].porcentajeArray.length;
 
-            temporal[i].porcentajePromedioNota = temporal[i].porcentajeArray.reduce((a,b) => a + b) / temporal[i].porcentajeArray.length;
+          temporal[i].contador++
 
-            temporal[i].contador++
-
+        } else {
+          temporal[i]==element
           }
 
       }
 
     }) 
 
-    return temporal
+    return temporal.sort((a, b) =>{
+      return b.concurrentes - a.concurrentes
+  })
     
-  } 
-  
-  else{
-    temporal = arrayTotal
-    return temporal
+  } else{
+    return arrayTotal
+    /* temporal = arrayTotal
+    return temporal */
     
     }
   
+}
+
+let temporalConcurrentes = []
+export function minConcurrentes (notas) {
+  temporalConcurrentes = JSON.parse(JSON.stringify(notas)).sort((a,b) =>{
+      return b.concurrentes - a.concurrentes
+  })
+  let min = 0
+
+  for(let i=0; i<20; i++){
+      min = temporalConcurrentes[i].concurrentes
+  }
+
+  return min -1
+ 
 }
 
 export function porcentajeAutor (ordenar) {
